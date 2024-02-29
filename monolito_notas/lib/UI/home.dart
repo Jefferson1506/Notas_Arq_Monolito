@@ -3,26 +3,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:monolito_notas/UI/crearNotaPage.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            appBar: estiloAppBar(context),
-            backgroundColor: Color.fromARGB(255, 241, 234, 138),
-            floatingActionButton: botonFlotante(context),
-            body: Stack(
-              children: [
-                Positioned.fill(
-                    child: Image.asset(
-                  filterQuality: FilterQuality.high,
-                  colorBlendMode: BlendMode.darken,
-                  color: Color.fromARGB(93, 255, 255, 0),
-                  "Image/Fondo de papel.jpg",
-                  fit: BoxFit.fill,
-                )),
-              ],
-            ));
+        appBar: estiloAppBar(context),
+        backgroundColor: Color.fromARGB(255, 241, 234, 138),
+        floatingActionButton: botonFlotante(context),
+        body: Stack(
+          children: [
+            Positioned.fill(
+                child: Image.asset(
+              filterQuality: FilterQuality.high,
+              colorBlendMode: BlendMode.darken,
+              color: Color.fromARGB(93, 255, 255, 0),
+              "Image/Fondo de papel.jpg",
+              fit: BoxFit.fill,
+            )),
+          ],
+        ));
   }
 }
 
@@ -31,9 +32,8 @@ AppBar estiloAppBar(BuildContext context) {
     automaticallyImplyLeading: false,
     title: Text(
       "Listado De Notas",
-      style: TextStyle(
-          color: Colors.white,
-          fontSize: MediaQuery.of(context).size.height * 0.03),
+      style: estiloTexto(
+          context, Colors.black, 0.03),
     ),
     elevation: MediaQuery.sizeOf(context).height * 0.03,
     backgroundColor: Color.fromARGB(255, 138, 76, 49),
@@ -53,7 +53,12 @@ FloatingActionButton botonFlotante(BuildContext context) {
     label: Text('Agregar'),
     backgroundColor: const Color.fromARGB(255, 109, 240, 105),
     onPressed: () {
-     
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => CrearNotaPage()));
     },
   );
+}
+
+TextStyle estiloTexto(BuildContext context, Color color, size) {
+  return GoogleFonts.robotoCondensed(color: color, fontSize: MediaQuery.sizeOf(context).height * size,);
 }
