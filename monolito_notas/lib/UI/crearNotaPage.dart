@@ -1,7 +1,12 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:monolito_notas/Logica/validacion.dart';
 import 'package:monolito_notas/UI/home.dart';
+
+TextEditingController titleController = TextEditingController();
+TextEditingController descripController = TextEditingController();
+TextEditingController contextController = TextEditingController();
 
 class CrearNotaPage extends StatelessWidget {
   @override
@@ -13,6 +18,7 @@ class CrearNotaPage extends StatelessWidget {
         child: ListView(
           children: [
             TextFormField(
+              controller: titleController,
               decoration: InputDecoration(
                 labelText: 'Título',
                 labelStyle: estiloTexto(context, Colors.black, 0.022),
@@ -29,6 +35,7 @@ class CrearNotaPage extends StatelessWidget {
             ),
             SizedBox(height: 40.0),
             TextFormField(
+              controller: descripController,
               maxLength: 100,
               decoration: InputDecoration(
                 labelText: 'Descripción (máx. 20 caracteres)',
@@ -46,6 +53,7 @@ class CrearNotaPage extends StatelessWidget {
             ),
             SizedBox(height: 20.0),
             TextField(
+              controller: contextController,
               maxLines: null,
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
@@ -76,7 +84,12 @@ class CrearNotaPage extends StatelessWidget {
                     ),
                     "Guardar",
                     Color.fromARGB(255, 43, 200, 29),
-                    () => Navigator.pop(context)),
+                    () => validateTextFields(
+                          titleController: titleController,
+                          descripController: descripController,
+                          contextController: contextController,
+                          context: context,
+                        )),
               ],
             ),
           ],

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "339349470481",
+    "project_id": "blocnotas-6f5d4",
+    "storage_bucket": "blocnotas-6f5d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:339349470481:android:6355dac2e3f6b90a0f20b0",
+        "android_client_info": {
+          "package_name": "com.example.monolito_notas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzqEgsYJvGc7udPnBkeS613cV85SycIRg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
