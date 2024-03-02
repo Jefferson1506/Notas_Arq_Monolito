@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:monolito_notas/Data/firebase.dart';
 import 'package:monolito_notas/Data/model.dart';
+import 'package:monolito_notas/Logica/validacion.dart';
 import 'package:monolito_notas/UI/crearNotaPage.dart';
 
 class Home extends StatelessWidget {
@@ -48,13 +49,13 @@ class _BodyNotesState extends State<BodyNotes> {
         body: GridView.builder(
           itemCount: listNotes.length,
           itemBuilder: (context, index) => itemNotes(
-            itemNo: index,
-            title: listNotes[index].title,
-            descrip: listNotes[index].descrip,
-            context: listNotes[index].context,
-            fecha: listNotes[index].fecha,
-            id: listNotes[index].id,
-          ),
+              itemNo: index,
+              title: listNotes[index].title,
+              descrip: listNotes[index].descrip,
+              context: listNotes[index].context,
+              fecha: listNotes[index].fecha,
+              id: listNotes[index].id,
+              context2: context),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 1,
@@ -62,14 +63,14 @@ class _BodyNotesState extends State<BodyNotes> {
         ));
   }
 
-  Widget itemNotes({
-    required itemNo,
-    required title,
-    required descrip,
-    required context,
-    required fecha,
-    required id,
-  }) {
+  Widget itemNotes(
+      {required itemNo,
+      required title,
+      required descrip,
+      required context,
+      required fecha,
+      required id,
+      required context2}) {
     final Color color = Colors.primaries[itemNo % Colors.primaries.length];
     return Padding(
       padding: const EdgeInsets.all(5),
@@ -77,10 +78,14 @@ class _BodyNotesState extends State<BodyNotes> {
         color: Colors.white,
         elevation: 20,
         child: ListTile(
+          splashColor: Colors.black,
           tileColor: color.withOpacity(0.3),
           title: Text("${title}\n"),
           subtitle: Text("${fecha}"),
-          onTap: () {},
+          onLongPress: () async {
+            await alertMensaje(context2, "Borrar la nota : ${title}", id);
+            llenarListas();
+          },
           leading: Container(
             width: 50,
             height: 30,

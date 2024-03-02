@@ -5,7 +5,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:monolito_notas/Data/firebase.dart';
 import 'package:quickalert/quickalert.dart';
 
- validateTextFields(
+validateTextFields(
     {required titleController,
     required TextEditingController descripController,
     required TextEditingController contextController,
@@ -21,13 +21,14 @@ import 'package:quickalert/quickalert.dart';
     Navigator.pop(context);
     errorMensaje(context, "Por favor, ingresa un contexto.");
   } else {
-    var reques= await addNote(
+    var reques = await addNote(
         title: titleController.text.toString(),
         descrip: descripController.text.toString(),
         context: contextController.text.toString());
     Navigator.pop(context);
-  reques ? correctoMensaje(context, "Nota Registrada.") : errorMensaje(context, "Problemas con el registro.");
-
+    reques
+        ? correctoMensaje(context, "Nota Registrada.")
+        : errorMensaje(context, "Problemas con el registro.");
   }
 }
 
@@ -73,5 +74,20 @@ Future correctoMensaje(BuildContext context, String mensaje) {
       confirmBtnText: "Confirmar",
       onConfirmBtnTap: () {
         Navigator.of(context).pop();
+      });
+}
+
+Future alertMensaje(BuildContext context, String mensaje, String id) {
+  return QuickAlert.show(
+      confirmBtnText: "SI",
+      context: context,
+      barrierColor: Color.fromARGB(165, 139, 128, 68),
+      confirmBtnColor: Color.fromARGB(255, 18, 157, 85),
+      type: QuickAlertType.warning,
+      title: '¿Esta Seguro?',
+      text: mensaje,
+      onConfirmBtnTap: () async {
+        await deleteNote(id);
+        Navigator.pop(context, true);
       });
 }
