@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:monolito_notas/Data/model.dart';
+import 'package:monolito_notas/UI/editarNotePage.dart';
 
 class DetalleNotaPage extends StatelessWidget {
-  final String title;
-  final String descrip;
-  final String body;
-  final String fecha;
+  final Notes nota;
 
   DetalleNotaPage({
-    required this.title,
-    required this.descrip,
-    required this.body,
-    required this.fecha,
+    required this.nota,
   });
 
   @override
@@ -21,27 +17,36 @@ class DetalleNotaPage extends StatelessWidget {
         title: Text('Detalles de la Nota'),
       ),
       floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.home),
-          backgroundColor: const Color.fromARGB(255, 109, 240, 105),
-          onPressed: () => Navigator.pop(context)),
+        child: Icon(Icons.edit),
+        backgroundColor: const Color.fromARGB(255, 109, 240, 105),
+        onPressed: ()async {
+       await   Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EditarNotaPage(nota: nota),
+            ),
+          );
+          Navigator.pop(context, true);
+        },
+      ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: ListView(
           children: [
             Text(
-              'Título: $title',
+              'Título: ${nota.title}',
               style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10.0),
             Text(
-              'Descripción: $descrip',
+              'Descripción: ${nota.descrip}',
               style: TextStyle(color: Colors.grey[600]),
             ),
             SizedBox(height: 10.0),
             Divider(), // Línea divisoria
             SizedBox(height: 10.0),
             Text(
-              'Fecha: $fecha',
+              'Fecha: ${nota.fecha}',
               style: TextStyle(fontStyle: FontStyle.italic),
             ),
             SizedBox(height: 10.0),
@@ -57,7 +62,7 @@ class DetalleNotaPage extends StatelessWidget {
               ),
               padding: EdgeInsets.all(10.0),
               child: Text(
-                body,
+                nota.body,
                 style: TextStyle(fontSize: 16.0),
               ),
             ),

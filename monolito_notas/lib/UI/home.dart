@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unnecessary_new
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -83,19 +83,24 @@ class _BodyNotesState extends State<BodyNotes> {
           tileColor: color.withOpacity(0.3),
           title: Text("${title}\n"),
           subtitle: Text("${fecha}"),
-          onTap: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => DetalleNotaPage(
-        title: title,
-        descrip: descrip,
-        body: body,
-        fecha: fecha,
-      ),
-    ),
-  );
-},
+          onTap: () async {
+            Notes notes = new Notes(
+              title: title,
+              descrip: descrip,
+              body: body,
+              fecha: fecha,
+              id: id,
+            );
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetalleNotaPage(
+                  nota: notes,
+                ),
+              ),
+            );
+            llenarListas();
+          },
           onLongPress: () async {
             await alertMensaje(context, "Borrar la nota : ${title}", id);
             llenarListas();
