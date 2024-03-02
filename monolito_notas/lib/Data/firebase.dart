@@ -11,14 +11,14 @@ FirebaseFirestore db = FirebaseFirestore.instance;
 Future<bool> addNote({
   required String title,
   required String descrip,
-  required String context,
+  required String body,
 }) async {
   try {
     await db.collection("Notes").add({
       "id": title + "" + soloFecha + " " + soloHora,
       "title": title,
       "descrip": descrip,
-      "context": context,
+      "body": body,
       "fecha": soloFecha + " " + soloHora
     });
 
@@ -40,7 +40,7 @@ Future<List<Notes>> getNotes() async {
           id: doc.id,
           title: data['title'],
           descrip: data['descrip'],
-          context: data['context'],
+          body: data['body'],
           fecha: data['fecha']);
     }).toList();
 
@@ -65,14 +65,14 @@ Future<bool> updateNote({
   required String noteId,
   required String title,
   required String descrip,
-  required String context,
+  required String body,
 }) async {
   try {
     await db.collection("Notes").doc(noteId).update({
       "id": title + "" + soloFecha + " " + soloHora,
       "title": title,
       "descrip": descrip,
-      "context": context,
+      "body": body,
       "fecha": soloFecha + " " + soloHora
     });
     return true;

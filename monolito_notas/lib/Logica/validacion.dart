@@ -24,7 +24,7 @@ validateTextFields(
     var reques = await addNote(
         title: titleController.text.toString(),
         descrip: descripController.text.toString(),
-        context: contextController.text.toString());
+        body: contextController.text.toString());
     Navigator.pop(context);
     reques
         ? correctoMensaje(context, "Nota Registrada.")

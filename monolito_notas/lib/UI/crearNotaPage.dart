@@ -6,7 +6,7 @@ import 'package:monolito_notas/UI/home.dart';
 
 TextEditingController titleController = TextEditingController();
 TextEditingController descripController = TextEditingController();
-TextEditingController contextController = TextEditingController();
+TextEditingController bodyController = TextEditingController();
 
 class CrearNotaPage extends StatelessWidget {
   @override
@@ -53,7 +53,7 @@ class CrearNotaPage extends StatelessWidget {
             ),
             SizedBox(height: 20.0),
             TextField(
-              controller: contextController,
+              controller: bodyController,
               maxLines: null,
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
@@ -95,7 +95,7 @@ class CrearNotaPage extends StatelessWidget {
              await  validateTextFields(
                     titleController: titleController,
                     descripController: descripController,
-                    contextController: contextController,
+                    contextController: bodyController,
                     context: context,
                   );
 
@@ -112,7 +112,7 @@ class CrearNotaPage extends StatelessWidget {
   void clearControllers() {
     titleController.clear();
     descripController.clear();
-    contextController.clear();
+    bodyController.clear();
   }
 }
 

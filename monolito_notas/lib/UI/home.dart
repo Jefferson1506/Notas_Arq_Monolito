@@ -6,6 +6,7 @@ import 'package:monolito_notas/Data/firebase.dart';
 import 'package:monolito_notas/Data/model.dart';
 import 'package:monolito_notas/Logica/validacion.dart';
 import 'package:monolito_notas/UI/crearNotaPage.dart';
+import 'package:monolito_notas/UI/detallesNotaPage.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -52,10 +53,10 @@ class _BodyNotesState extends State<BodyNotes> {
               itemNo: index,
               title: listNotes[index].title,
               descrip: listNotes[index].descrip,
-              context: listNotes[index].context,
+              body: listNotes[index].body,
               fecha: listNotes[index].fecha,
               id: listNotes[index].id,
-              context2: context),
+              context: context),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 1,
@@ -67,10 +68,10 @@ class _BodyNotesState extends State<BodyNotes> {
       {required itemNo,
       required title,
       required descrip,
-      required context,
+      required body,
       required fecha,
       required id,
-      required context2}) {
+      required context}) {
     final Color color = Colors.primaries[itemNo % Colors.primaries.length];
     return Padding(
       padding: const EdgeInsets.all(5),
@@ -82,8 +83,21 @@ class _BodyNotesState extends State<BodyNotes> {
           tileColor: color.withOpacity(0.3),
           title: Text("${title}\n"),
           subtitle: Text("${fecha}"),
+          onTap: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => DetalleNotaPage(
+        title: title,
+        descrip: descrip,
+        body: body,
+        fecha: fecha,
+      ),
+    ),
+  );
+},
           onLongPress: () async {
-            await alertMensaje(context2, "Borrar la nota : ${title}", id);
+            await alertMensaje(context, "Borrar la nota : ${title}", id);
             llenarListas();
           },
           leading: Container(
