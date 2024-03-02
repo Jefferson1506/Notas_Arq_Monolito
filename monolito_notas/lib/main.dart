@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:monolito_notas/UI/home.dart';
 import '../firebase_options.dart';
+import 'UI/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,6 +10,9 @@ void main() async {
   );
   runApp(MyApp());
 }
+
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

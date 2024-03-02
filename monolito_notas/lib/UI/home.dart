@@ -1,103 +1,138 @@
-import 'dart:math';
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:get/get.dart';
-import 'package:monolito_notas/Logica/controller.dart';
+import 'package:monolito_notas/Data/firebase.dart';
+import 'package:monolito_notas/Data/model.dart';
 import 'package:monolito_notas/UI/crearNotaPage.dart';
 
-
-
-
 class Home extends StatelessWidget {
-  final HomeController controller = Get.put(HomeController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: estiloAppBar(context),
       backgroundColor: Color.fromARGB(255, 241, 234, 138),
-      floatingActionButton: botonFlotante(context),
-      body: Obx(() => ListView.builder(
-            itemCount: controller.notesList.length,
-            itemBuilder: (context, index) {
-              final note = controller.notesList[index];
-              return CardWidget(
-                title: note.title,
-                description: note.descrip,
-              );
-            },
-          )),
-    );
-  }
-}
-
-class CardWidget extends StatelessWidget {
-  final String title;
-  final String description;
-
-  CardWidget({required this.title, required this.description});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-      elevation: 5,
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: GoogleFonts.robotoCondensed(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Text(
-              description,
-              style: TextStyle(fontSize: 16),
-            ),
-          ],
-        ),
+      body: Container(
+        margin: EdgeInsets.only(top: 30),
+        child: BodyNotes(),
       ),
     );
   }
 }
+
+class BodyNotes extends StatefulWidget {
+  const BodyNotes({super.key});
+
+  State<BodyNotes> createState() => _BodyNotesState();
+}
+
+class _BodyNotesState extends State<BodyNotes> {
+  List<Notes> listNotes = [];
+
+  @override
+  void initState() {
+    super.initState();
+    llenarListas();
+  }
+
+  void llenarListas() async {
+    listNotes = await getNotes();
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        floatingActionButton: botonFlotante(context),
+        backgroundColor: Color.fromARGB(255, 241, 234, 138),
+        body: GridView.builder(
+          itemCount: listNotes.length,
+          itemBuilder: (context, index) => itemNotes(
+            itemNo: index,
+            title: listNotes[index].title,
+            descrip: listNotes[index].descrip,
+            context: listNotes[index].context,
+            fecha: listNotes[index].fecha,
+            id: listNotes[index].id,
+          ),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 1,
+          ),
+        ));
+  }
+
+  Widget itemNotes({
+    required itemNo,
+    required title,
+    required descrip,
+    required context,
+    required fecha,
+    required id,
+  }) {
+    final Color color = Colors.primaries[itemNo % Colors.primaries.length];
+    return Padding(
+      padding: const EdgeInsets.all(5),
+      child: Card(
+        color: Colors.white,
+        elevation: 20,
+        child: ListTile(
+          tileColor: color.withOpacity(0.3),
+          title: Text("${title}\n"),
+          subtitle: Text("${fecha}"),
+          onTap: () {},
+          leading: Container(
+            width: 50,
+            height: 30,
+            color: color.withOpacity(0.5),
+            child: Placeholder(
+              color: color,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  FloatingActionButton botonFlotante(BuildContext context) {
+    return FloatingActionButton.extended(
+      isExtended: true,
+      icon: Icon(Icons.add_circle_outlined),
+      label: Text('Agregar'),
+      backgroundColor: const Color.fromARGB(255, 109, 240, 105),
+      onPressed: () async {
+        await Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => CrearNotaPage()));
+        llenarListas();
+      },
+    );
+  }
+}
+
+/************************************************* */
 
 AppBar estiloAppBar(BuildContext context) {
   return AppBar(
     automaticallyImplyLeading: false,
     title: Text(
       "Listado De Notas",
-      style: estiloTexto(context, Colors.black, 0.03),
+      style:
+          estiloTexto(context, const Color.fromARGB(255, 255, 255, 255), 0.03),
     ),
-    elevation: MediaQuery.of(context).size.height * 0.03,
-    backgroundColor: Color.fromARGB(255, 166, 100, 71),
+    elevation: MediaQuery.sizeOf(context).height * 0.03,
+    backgroundColor: Color.fromARGB(255, 138, 76, 49),
     shadowColor: Color.fromARGB(255, 163, 50, 50),
-    toolbarHeight: MediaQuery.of(context).size.height * 0.08,
+    toolbarHeight: MediaQuery.sizeOf(context).height * 0.08,
     centerTitle: true,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(bottomRight: Radius.circular(40), bottomLeft: Radius.circular(40)),
-    ),
+        borderRadius: BorderRadius.only(
+            bottomRight: Radius.circular(40), bottomLeft: Radius.circular(40))),
   );
 }
 
-FloatingActionButton botonFlotante(BuildContext context) {
-  return FloatingActionButton.extended(
-    isExtended: true,
-    icon: Icon(Icons.add_circle_outlined),
-    label: Text('Agregar'),
-    backgroundColor: const Color.fromARGB(255, 109, 240, 105),
-    onPressed: () {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => CrearNotaPage()));
-    },
-  );
-}
-
-TextStyle estiloTexto(BuildContext context, Color color, double size) {
+TextStyle estiloTexto(BuildContext context, Color color, size) {
   return GoogleFonts.robotoCondensed(
     color: color,
-    fontSize: MediaQuery.of(context).size.height * size,
+    fontSize: MediaQuery.sizeOf(context).height * size,
   );
 }

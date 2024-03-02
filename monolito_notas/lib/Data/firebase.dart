@@ -1,18 +1,25 @@
 import "package:cloud_firestore/cloud_firestore.dart";
+import "package:intl/intl.dart";
 import "package:monolito_notas/Data/model.dart";
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
 Future<bool> addNote({
   required String title,
-  String? descrip,
-  String? context,
+  required String descrip,
+ required String context,
 }) async {
+
+    DateTime fechaActual = DateTime.now();
+ String soloFecha = DateFormat('yyyy-MM-dd').format(fechaActual);
+  String soloHora = DateFormat('HH:mm:ss').format(fechaActual);
   try {
     await db.collection("Notes").add({
+      "id":title+""+soloFecha+" "+soloHora,
       "title": title,
       "descrip": descrip,
       "context": context,
+      "fecha":soloFecha+" "+soloHora
     });
 
     return true;
@@ -22,6 +29,9 @@ Future<bool> addNote({
   }
 }
 
+
+
+
 Future<List<Notes>> getNotes() async {
   try {
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
@@ -30,9 +40,11 @@ Future<List<Notes>> getNotes() async {
     List<Notes> notesList = querySnapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data();
       return Notes(
-        title: data['title'] ,
-        descrip: data['descrip'] ,
-        context: data['context'] ,
+        id: doc.id, 
+        title: data['title'],
+        descrip: data['descrip'],
+        context: data['context'],
+        fecha:data['fecha']
       );
     }).toList();
 
@@ -43,3 +55,14 @@ Future<List<Notes>> getNotes() async {
   }
 }
 
+
+
+Future<bool> deleteNote(String noteId) async {
+  try {
+    await db.collection("Notes").doc(noteId).delete();
+    return true;
+  } catch (e) {
+    print(e);
+    return false;
+  }
+}

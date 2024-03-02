@@ -74,8 +74,16 @@ class CrearNotaPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                button(context, Icon(Icons.back_hand, color: Colors.white),
-                    "Cancelar", Colors.redAccent, () => Navigator.pop(context)),
+                button(
+                  context,
+                  Icon(Icons.back_hand, color: Colors.white),
+                  "Cancelar",
+                  Colors.redAccent,
+                  () {
+                    clearControllers();
+                    Navigator.of(context).pop(true);
+                  },
+                ),
                 button(
                     context,
                     Icon(
@@ -83,19 +91,28 @@ class CrearNotaPage extends StatelessWidget {
                       color: Colors.white,
                     ),
                     "Guardar",
-                    Color.fromARGB(255, 43, 200, 29),
-                    () => validateTextFields(
-                          titleController: titleController,
-                          descripController: descripController,
-                          contextController: contextController,
-                          context: context,
-                        )),
+                    Color.fromARGB(255, 43, 200, 29), () async {
+             await  validateTextFields(
+                    titleController: titleController,
+                    descripController: descripController,
+                    contextController: contextController,
+                    context: context,
+                  );
+
+                  clearControllers();
+                }),
               ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  void clearControllers() {
+    titleController.clear();
+    descripController.clear();
+    contextController.clear();
   }
 }
 

@@ -11,8 +11,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     fetchNotes(); 
-    super.onInit();
-  }
+    super.onInit();  }
 
   void fetchNotes() async {
     final List<Notes> notes = await getNotes();

@@ -5,7 +5,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:monolito_notas/Data/firebase.dart';
 import 'package:quickalert/quickalert.dart';
 
-void validateTextFields(
+ validateTextFields(
     {required titleController,
     required TextEditingController descripController,
     required TextEditingController contextController,
